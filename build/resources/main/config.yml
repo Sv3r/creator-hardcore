@@ -1,0 +1,12 @@
+# Minutes
+grace-period: 2
+
+prefix: "<dark_red><bold>[CreatorHARDCORE]</bold><reset><red>"
+
+join-grace-message: "%prefix% Welkom, je kunt gedurende een tijd van <bold><underlined>%grace% minuten</underlined></bold> respawnen!"
+join-message: "%prefix% Welkom, je kunt <bold><underlined>NIET</underlined></bold> meer respawnen!"
+
+broadcast-death-message: "%prefix% <bold><underlined>%player%</underlined></bold> is geëlimineerd!"
+respawn-message: "%prefix% Je grace period bedraagt nog <bold><underlined>%grace% minuten</underlined></bold>!"
+
+remind-grace-message: "%prefix% Je kunt nu <bold><underlined>NIET</underlined></bold> meer respawnen!"
