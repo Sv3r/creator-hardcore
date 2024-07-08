@@ -1,6 +1,0 @@
-name: creator-hardcore
-version: '1.0.0'
-main: be.sv3r.creatorhardcore.CreatorHardcore
-description: CreatorSMP Hardcore
-author: Sv3r
-api-version: '1.21'
