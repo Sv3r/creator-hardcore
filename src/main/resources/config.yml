@@ -1,12 +1,16 @@
 # Minutes
 grace-period: 2
 
-prefix: "<dark_red><bold>[CreatorHARDCORE]</bold><reset><red>"
+prefix: "<white><bold></bold><reset><#dc4655>"
 
-join-grace-message: "%prefix% Welkom, je kunt gedurende een tijd van <bold><underlined>%grace% minuten</underlined></bold> respawnen!"
-join-message: "%prefix% Welkom, je kunt <bold><underlined>NIET</underlined></bold> meer respawnen!"
+join-grace-message: "%prefix% Welkom, je kunt gedurende een tijd van <white><bold>%grace%min</bold></white> respawnen!"
+join-message: "%prefix% Welkom, je kunt <white><bold>niet</bold></white> meer respawnen!"
 
-broadcast-death-message: "%prefix% <bold><underlined>%player%</underlined></bold> is geëlimineerd!"
-respawn-message: "%prefix% Je grace period bedraagt nog <bold><underlined>%grace% minuten</underlined></bold>!"
+death-title-message: "<white>"
+broadcast-death-message: "%prefix% <white><bold>%player%</bold></white> is uitgeschakeld!"
+respawn-message: "%prefix% Je grace period bedraagt nog <white><bold>%grace%min</bold></white>!"
 
-remind-grace-message: "%prefix% Je kunt nu <bold><underlined>NIET</underlined></bold> meer respawnen!"
+remind-grace-message: "%prefix% Je kunt nu <white><bold>niet</bold></white> meer respawnen!"
+
+player-join: "<white><bold></bold></white> <#7cf459>%player%"
+player-leave: "<white><bold></bold></white> <#dc4655>%player%"

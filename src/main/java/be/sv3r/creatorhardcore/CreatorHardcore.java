@@ -1,6 +1,7 @@
 package be.sv3r.creatorhardcore;
 
 import be.sv3r.creatorhardcore.listener.PlayerListener;
+import be.sv3r.creatorhardcore.listener.ServerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +33,7 @@ public final class CreatorHardcore extends JavaPlugin implements Listener {
     }
 
     private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new ServerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
     }
 }

@@ -4,30 +4,37 @@ import be.sv3r.creatorhardcore.CreatorHardcore;
 import be.sv3r.creatorhardcore.task.PlayerGraceReminderTask;
 import be.sv3r.creatorhardcore.util.MessageUtil;
 import be.sv3r.creatorhardcore.util.PlayerUtil;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import net.kyori.adventure.text.Component;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 public class PlayerListener implements Listener {
+    private final HashMap<UUID, Location> deathLocations = new HashMap<UUID, Location>();
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (player.hasPermission(PlayerUtil.ignorePermission)) return;
+
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
 
         if (!dataContainer.has(PlayerUtil.joinTimeKey, PersistentDataType.STRING)) {
@@ -44,10 +51,25 @@ public class PlayerListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
 
-        if (PlayerUtil.isPlayerDead(player)) {
-            spawnDeathFirework(player);
+        if (player.hasPermission(PlayerUtil.ignorePermission)) return;
+
+        UUID playerUuid = player.getUniqueId();
+
+        if (PlayerUtil.isPlayerVulnerable(player)) {
+            deathLocations.put(playerUuid, player.getLocation());
+
+            player.setGameMode(GameMode.SPECTATOR);
+
+            MessageUtil.sendDeathTitleMessage(player);
             MessageUtil.broadcastDeathMessage(player);
-            player.setRespawnLocation(player.getLocation(), true);
+
+            event.setKeepInventory(false);
+            event.setKeepLevel(false);
+            event.setShouldDropExperience(true);
+
+            CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> {
+                player.spigot().respawn();
+            }, 1L);
         }
     }
 
@@ -55,21 +77,50 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (!PlayerUtil.isPlayerDead(player)) {
+        if (player.hasPermission(PlayerUtil.ignorePermission)) return;
+
+        UUID playerUuid = player.getUniqueId();
+
+        if (!PlayerUtil.isPlayerVulnerable(player)) {
             MessageUtil.sendRespawnMessage(event.getPlayer());
         } else {
-            player.setGameMode(GameMode.SPECTATOR);
+            if (deathLocations.containsKey(playerUuid)) {
+                event.setRespawnLocation(deathLocations.get(playerUuid));
+                deathLocations.remove(playerUuid);
+            }
+
+            spawnDeathFirework(player.getLocation().add(0, 1, 0));
         }
     }
 
-    private void spawnDeathFirework(Player player) {
-        Location location = player.getLocation();
-        Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK_ROCKET);
-        FireworkMeta fireworkMeta = firework.getFireworkMeta();
-        fireworkMeta.addEffect(FireworkEffect.builder().trail(true).withColor(Color.RED).build());
-        firework.setFireworkMeta(fireworkMeta);
-        firework.setMetadata("nodamage", new FixedMetadataValue(CreatorHardcore.getPlugin(), true));
-        firework.setMetadata("shape", new FixedMetadataValue(CreatorHardcore.getPlugin(), "large_ball"));
-        firework.detonate();
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Firework firework) {
+            if (Objects.equals(firework.getFireworkMeta().displayName(), Component.text("death"))) {
+                event.setCancelled(true);
+            }
+        }
+
+        if (event.getDamager() instanceof Player damager) {
+            if (damager.hasPermission(PlayerUtil.ignorePermission)) return;
+
+            if (event.getEntity() instanceof Player victim) {
+                // todo: stop damage in certain situations
+            }
+        }
+    }
+
+    private void spawnDeathFirework(Location location) {
+        ItemStack fireworkItem = new ItemStack(Material.FIREWORK_ROCKET);
+        FireworkMeta meta = (FireworkMeta) fireworkItem.getItemMeta();
+        meta.addEffect(FireworkEffect.builder().withColor(Color.RED).with(FireworkEffect.Type.BALL).withFlicker().withTrail().build());
+        meta.displayName(Component.text("death"));
+        meta.setPower(3);
+        fireworkItem.setItemMeta(meta);
+
+        Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK_ROCKET);
+        firework.setItem(fireworkItem);
+
+        CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), firework::detonate, 1L);
     }
 }

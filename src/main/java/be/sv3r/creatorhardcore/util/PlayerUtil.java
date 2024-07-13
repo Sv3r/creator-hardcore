@@ -12,8 +12,9 @@ import java.time.Instant;
 public class PlayerUtil {
     public static final NamespacedKey joinTimeKey = new NamespacedKey(CreatorHardcore.getPlugin(), "jointime");
     public static final long gracePeriod = CreatorHardcore.getPlugin().getConfig().getLong("grace-period");
+    public static final String ignorePermission = "creatorhardcore.ignore";
 
-    public static boolean isPlayerDead(Player player) {
+    public static boolean isPlayerVulnerable(Player player) {
         return getGracePeriod(player) >= gracePeriod;
     }
 
