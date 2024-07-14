@@ -3,10 +3,19 @@ grace-period: 2
 
 prefix: "<white><bold></bold><reset><#dc4655>"
 
-join-grace-message: "%prefix% Welkom, je kunt gedurende een tijd van <white><bold>%grace%min</bold></white> respawnen!"
+join-grace-message: "%prefix% Welkom, je grace period bedraagt <white><bold>%grace%min</bold></white>!"
 join-message: "%prefix% Welkom, je kunt <white><bold>niet</bold></white> meer respawnen!"
 
-death-title-message: "<white>"
+death-title-messages:
+  - "<white>"
+  - "<white>"
+  - "<white>"
+  - "<white>"
+  - "<white>"
+  - "<white>"
+  - "<white>"
+  - "<white>"
+
 broadcast-death-message: "%prefix% <white><bold>%player%</bold></white> is uitgeschakeld!"
 respawn-message: "%prefix% Je grace period bedraagt nog <white><bold>%grace%min</bold></white>!"
 
