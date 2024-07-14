@@ -117,7 +117,7 @@ public class PlayerListener implements Listener {
                 if (damager.hasPermission(PlayerUtil.ignorePermission)) return;
 
                 if (event.getEntity() instanceof Player victim) {
-                    if (canPvp(damager, victim)) {
+                    if (isPvpDisabled(damager, victim)) {
                         event.setCancelled(true);
                     }
                 }
@@ -128,7 +128,7 @@ public class PlayerListener implements Listener {
             if (damager.hasPermission(PlayerUtil.ignorePermission)) return;
 
             if (event.getEntity() instanceof Player victim) {
-                if (canPvp(damager, victim)) {
+                if (isPvpDisabled(damager, victim)) {
                     event.setCancelled(true);
                 }
             }
@@ -149,7 +149,7 @@ public class PlayerListener implements Listener {
         CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), firework::detonate, 1L);
     }
 
-    private boolean canPvp(Player damager, Player victim) {
+    private boolean isPvpDisabled(Player damager, Player victim) {
         PersistentDataContainer damagerDataContainer = damager.getPersistentDataContainer();
         PersistentDataContainer victimDataContainer = victim.getPersistentDataContainer();
 
