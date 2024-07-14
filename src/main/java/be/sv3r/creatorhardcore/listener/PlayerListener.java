@@ -61,7 +61,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        event.deathMessage(Component.empty());
+        event.deathMessage(null);
 
         if (player.hasPermission(PlayerUtil.ignorePermission)) return;
 
