@@ -10,6 +10,7 @@ import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -60,6 +61,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+        event.deathMessage(Component.empty());
 
         if (player.hasPermission(PlayerUtil.ignorePermission)) return;
 
@@ -110,17 +112,23 @@ public class PlayerListener implements Listener {
             }
         }
 
+        if (event.getDamager() instanceof Projectile projectile) {
+            if (projectile.getShooter() instanceof Player damager) {
+                if (damager.hasPermission(PlayerUtil.ignorePermission)) return;
+
+                if (event.getEntity() instanceof Player victim) {
+                    if (canPvp(damager, victim)) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+
         if (event.getDamager() instanceof Player damager) {
             if (damager.hasPermission(PlayerUtil.ignorePermission)) return;
 
             if (event.getEntity() instanceof Player victim) {
-                PersistentDataContainer damagerDataContainer = damager.getPersistentDataContainer();
-                PersistentDataContainer victimDataContainer = victim.getPersistentDataContainer();
-
-                PlayerState damagerState = PlayerState.valueOf(damagerDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
-                PlayerState victimState = PlayerState.valueOf(victimDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
-
-                if (!damagerState.equals(PlayerState.CRUDE) || !victimState.equals(PlayerState.CRUDE)) {
+                if (canPvp(damager, victim)) {
                     event.setCancelled(true);
                 }
             }
@@ -139,5 +147,15 @@ public class PlayerListener implements Listener {
         firework.setItem(fireworkItem);
 
         CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), firework::detonate, 1L);
+    }
+
+    private boolean canPvp(Player damager, Player victim) {
+        PersistentDataContainer damagerDataContainer = damager.getPersistentDataContainer();
+        PersistentDataContainer victimDataContainer = victim.getPersistentDataContainer();
+
+        PlayerState damagerState = PlayerState.valueOf(damagerDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
+        PlayerState victimState = PlayerState.valueOf(victimDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
+
+        return !damagerState.equals(PlayerState.CRUDE) || !victimState.equals(PlayerState.CRUDE);
     }
 }
