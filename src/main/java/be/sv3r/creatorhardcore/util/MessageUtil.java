@@ -26,6 +26,8 @@ public class MessageUtil {
 
     private static final String elytraMessage;
 
+    private static final String permissionDeniedMessage;
+
     static {
         assert prefix != null;
         joinMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("join-message")).replace("%prefix%", prefix);
@@ -39,6 +41,7 @@ public class MessageUtil {
         playerLeave = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("player-leave"));
 
         elytraMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("elytra-message")).replace("%prefix%", prefix);
+        permissionDeniedMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("permission-denied-message")).replace("%prefix%", prefix);
     }
 
     public static void sendJoinMessage(Player player) {
@@ -69,11 +72,19 @@ public class MessageUtil {
         sendMessage(player, elytraMessage);
     }
 
+    public static void sendPermissionDeniedMessage(Player player) {
+        sendMessage(player, permissionDeniedMessage);
+    }
+
     public static void sendDeathTitleMessage(Player player) {
         Random random = new Random();
 
         int randomIndex = random.nextInt(deathTitleMessages.size());
         sendTitleMessage(player, deathTitleMessages.get(randomIndex));
+    }
+
+    public static void sendMessageWithPrefix(Player player, String message) {
+        sendMessage(player, prefix + " " + message);
     }
 
     public static void broadcastDeathMessage(Player player) {

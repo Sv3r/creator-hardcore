@@ -19,9 +19,10 @@ death-title-messages:
 broadcast-death-message: "%prefix% <white><bold>%player%</bold></white> is uitgeschakeld!"
 respawn-message: "%prefix% Je grace periode duurt nog <white><bold>%grace%min</bold></white>!"
 
-remind-grace-message: "%prefix% Je kunt nu <white><bold>niet</bold></white> meer respawnen!"
+remind-grace-message: "%prefix% Je kunt <white><bold>niet</bold></white> meer respawnen!"
 
 player-join: "<white><bold></bold></white> <#7cf459>%player%"
 player-leave: "<white><bold></bold></white> <#dc4655>%player%"
 
 elytra-message: "%prefix% Elytras zijn verboden op deze server!"
+permission-denied-message: "%prefix% Je hebt geen toegang tot dit commando!"
