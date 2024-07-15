@@ -24,6 +24,8 @@ public class MessageUtil {
     private static final String playerJoin;
     private static final String playerLeave;
 
+    private static final String elytraMessage;
+
     static {
         assert prefix != null;
         joinMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("join-message")).replace("%prefix%", prefix);
@@ -35,6 +37,8 @@ public class MessageUtil {
 
         playerJoin = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("player-join"));
         playerLeave = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("player-leave"));
+
+        elytraMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("elytra-message")).replace("%prefix%", prefix);
     }
 
     public static void sendJoinMessage(Player player) {
@@ -59,6 +63,10 @@ public class MessageUtil {
 
     public static void sendRemindGraceMessage(Player player) {
         sendMessage(player, remindGraceMessage);
+    }
+
+    public static void sendElytraMessage(Player player) {
+        sendMessage(player, elytraMessage);
     }
 
     public static void sendDeathTitleMessage(Player player) {

@@ -1,5 +1,6 @@
 package be.sv3r.creatorhardcore;
 
+import be.sv3r.creatorhardcore.listener.ElytraListener;
 import be.sv3r.creatorhardcore.listener.PlayerListener;
 import be.sv3r.creatorhardcore.listener.ServerListener;
 import net.luckperms.api.LuckPerms;
@@ -42,5 +43,6 @@ public final class CreatorHardcore extends JavaPlugin implements Listener {
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new ServerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ElytraListener(), this);
     }
 }

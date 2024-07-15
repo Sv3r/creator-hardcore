@@ -23,3 +23,5 @@ remind-grace-message: "%prefix% Je kunt nu <white><bold>niet</bold></white> meer
 
 player-join: "<white><bold></bold></white> <#7cf459>%player%"
 player-leave: "<white><bold></bold></white> <#dc4655>%player%"
+
+elytra-message: "%prefix% Elytras zijn verboden op deze server!"
