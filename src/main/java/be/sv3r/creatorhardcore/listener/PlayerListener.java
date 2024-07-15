@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class PlayerListener implements Listener {
-    private final HashMap<UUID, Location> deathLocations = new HashMap<>();
+    public final HashMap<UUID, Location> deathLocations = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerAdvancement(PlayerAdvancementDoneEvent event) {
+        if (event.getPlayer().hasPermission("creatorhardcore.admin")) {
+            event.message(null);
+        }
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -40,7 +48,6 @@ public class PlayerListener implements Listener {
 
         if (!dataContainer.has(PlayerUtil.joinTimeKey, PersistentDataType.STRING)) {
             dataContainer.set(PlayerUtil.joinTimeKey, PersistentDataType.STRING, Instant.now().toString());
-
             CreatorHardcore plugin = CreatorHardcore.getPlugin();
             CreatorHardcore.getScheduler().runTaskLaterAsynchronously(plugin, new PlayerCrudeTask(plugin, player.getUniqueId()), PlayerUtil.gracePeriod * 1200);
         }
@@ -96,8 +103,10 @@ public class PlayerListener implements Listener {
             MessageUtil.sendRespawnMessage(event.getPlayer());
         } else {
             if (deathLocations.containsKey(playerUuid)) {
-                event.setRespawnLocation(deathLocations.get(playerUuid));
-                deathLocations.remove(playerUuid);
+                CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> {
+                    player.teleport(deathLocations.get(playerUuid));
+                    deathLocations.remove(playerUuid);
+                }, 1L);
             }
 
             spawnDeathFirework(player.getLocation().add(0, 1, 0));
