@@ -104,7 +104,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Firework firework) {
             if (Objects.equals(firework.getFireworkMeta().displayName(), Component.text("death"))) {
