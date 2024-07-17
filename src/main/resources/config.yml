@@ -23,6 +23,10 @@ remind-grace-message: "%prefix% Je kunt <white><bold>niet</bold></white> meer re
 
 player-join: "<white><bold></bold></white> <#7cf459>%player%"
 player-leave: "<white><bold></bold></white> <#dc4655>%player%"
+kick-message: "<#dc4655><bold>Server is open tussen <white><bold>%start-time%</bold></white> en <white><bold>%stop-time%</bold></white>!"
 
 elytra-message: "%prefix% Elytras zijn verboden op deze server!"
 permission-denied-message: "%prefix% Je hebt geen toegang tot dit commando!"
+
+start-time: 13
+stop-time: 1

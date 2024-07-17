@@ -22,6 +22,7 @@ public class PlayerUtil {
     public static final NamespacedKey stateKey = new NamespacedKey(CreatorHardcore.getPlugin(), "state");
     public static final long gracePeriod = CreatorHardcore.getPlugin().getConfig().getLong("grace-period");
     public static final String ignorePermission = "creatorhardcore.ignore";
+    public static final String adminPermission = "creatorhardcore.admin";
 
     public static void setPlayerState(Player player, PlayerState playerState) {
         String state = playerState.toString();

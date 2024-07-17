@@ -23,10 +23,12 @@ public class MessageUtil {
 
     private static final String playerJoin;
     private static final String playerLeave;
+    private static final String kickMessage;
 
     private static final String elytraMessage;
 
     private static final String permissionDeniedMessage;
+
 
     static {
         assert prefix != null;
@@ -39,6 +41,7 @@ public class MessageUtil {
 
         playerJoin = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("player-join"));
         playerLeave = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("player-leave"));
+        kickMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("kick-message"));
 
         elytraMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("elytra-message")).replace("%prefix%", prefix);
         permissionDeniedMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("permission-denied-message")).replace("%prefix%", prefix);
@@ -99,6 +102,14 @@ public class MessageUtil {
 
     public static @NotNull Component getPlayerLeaveMessage(Player player) {
         String message = playerLeave.replace("%player%", player.getName());
+        return MiniMessage.miniMessage().deserialize(message);
+    }
+
+    public static @NotNull Component getKickMessage() {
+        String message = kickMessage
+                .replace("%start-time%", TimeUtil.startTime.toString())
+                .replace("%stop-time%", TimeUtil.stopTime.toString());
+
         return MiniMessage.miniMessage().deserialize(message);
     }
 

@@ -6,6 +6,7 @@ import be.sv3r.creatorhardcore.command.SetGracedCommand;
 import be.sv3r.creatorhardcore.listener.ElytraListener;
 import be.sv3r.creatorhardcore.listener.PlayerListener;
 import be.sv3r.creatorhardcore.listener.ServerListener;
+import be.sv3r.creatorhardcore.util.TimeUtil;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -44,6 +45,7 @@ public final class CreatorHardcore extends JavaPlugin implements Listener {
         setupConfig();
         registerListeners();
         registerCommands();
+        registerServerTimeHandler();
     }
 
     private void setupConfig() {
@@ -64,5 +66,9 @@ public final class CreatorHardcore extends JavaPlugin implements Listener {
             commands.register("setcrude", "Geeft de gekozen speler de status crude", new SetCrudeCommand());
             commands.register("setgraced", "Geeft de gekozen speler de status graced", new SetGracedCommand());
         });
+    }
+
+    private void registerServerTimeHandler() {
+        getScheduler().runTaskTimer(this, TimeUtil::checkPlayers, 0, 1200L);
     }
 }

@@ -5,6 +5,7 @@ import be.sv3r.creatorhardcore.listener.state.PlayerState;
 import be.sv3r.creatorhardcore.task.PlayerCrudeTask;
 import be.sv3r.creatorhardcore.util.MessageUtil;
 import be.sv3r.creatorhardcore.util.PlayerUtil;
+import be.sv3r.creatorhardcore.util.TimeUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -34,7 +35,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAdvancement(PlayerAdvancementDoneEvent event) {
-        if (event.getPlayer().hasPermission("creatorhardcore.admin")) {
+        if (event.getPlayer().hasPermission(PlayerUtil.adminPermission)) {
             event.message(null);
         }
     }
@@ -42,6 +43,11 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (TimeUtil.kickPlayerIfClosed(player)) {
+            return;
+        }
+
         if (player.hasPermission(PlayerUtil.ignorePermission)) return;
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
