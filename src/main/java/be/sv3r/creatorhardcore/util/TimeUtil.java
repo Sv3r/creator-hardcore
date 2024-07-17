@@ -28,7 +28,7 @@ public class TimeUtil {
         if (startTime.isBefore(stopTime)) {
             return !Instant.now().isAfter(startInstant) || !Instant.now().isBefore(stopInstant);
         } else {
-            return Instant.now().isAfter(stopInstant) || Instant.now().isBefore(startInstant);
+            return Instant.now().isAfter(stopInstant) && Instant.now().isBefore(startInstant);
         }
     }
 
