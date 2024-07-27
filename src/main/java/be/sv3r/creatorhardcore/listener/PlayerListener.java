@@ -35,7 +35,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAdvancement(PlayerAdvancementDoneEvent event) {
-        if (event.getPlayer().hasPermission(PlayerUtil.adminPermission) || event.getPlayer().hasPermission("group.felled")) {
+        if (event.getPlayer().hasPermission(PlayerUtil.adminPermission) || event.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) {
             event.message(null);
         }
     }
