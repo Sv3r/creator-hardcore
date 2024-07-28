@@ -28,6 +28,7 @@ public class MessageUtil {
     private static final String elytraMessage;
 
     private static final String permissionDeniedMessage;
+    private static final String discordDeathChannel;
 
 
     static {
@@ -45,6 +46,7 @@ public class MessageUtil {
 
         elytraMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("elytra-message")).replace("%prefix%", prefix);
         permissionDeniedMessage = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("permission-denied-message")).replace("%prefix%", prefix);
+        discordDeathChannel = Objects.requireNonNull(CreatorHardcore.getPlugin().getConfig().getString("discord-death-channel"));
     }
 
     public static void sendJoinMessage(Player player) {
@@ -126,5 +128,9 @@ public class MessageUtil {
     private static void sendTitleMessage(Player player, String message) {
         Component parsed = MiniMessage.miniMessage().deserialize(message);
         player.sendTitlePart(TitlePart.TITLE, parsed);
+    }
+
+    public static String getDiscordDeathChannel() {
+        return discordDeathChannel;
     }
 }

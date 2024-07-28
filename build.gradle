@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'be.sv3r'
-version = '1.0.0'
+version = '2.0.0'
 
 repositories {
     mavenCentral()
@@ -15,11 +15,15 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        url = "https://nexus.scarsz.me/content/groups/public/"
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
     compileOnly "net.luckperms:api:5.4"
+    compileOnly "com.discordsrv:discordsrv:1.27.0"
 }
 
 def targetJavaVersion = 21

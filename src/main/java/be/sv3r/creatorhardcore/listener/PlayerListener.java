@@ -6,6 +6,7 @@ import be.sv3r.creatorhardcore.task.PlayerCrudeTask;
 import be.sv3r.creatorhardcore.util.MessageUtil;
 import be.sv3r.creatorhardcore.util.PlayerUtil;
 import be.sv3r.creatorhardcore.util.TimeUtil;
+import github.scarsz.discordsrv.util.DiscordUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -71,9 +72,13 @@ public class PlayerListener implements Listener {
         MessageUtil.sendJoinMessage(player);
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+
+        String deathMessage = event.getDeathMessage();
+
         event.deathMessage(null);
 
         if (player.hasPermission(PlayerUtil.ignorePermission)) return;
@@ -94,6 +99,9 @@ public class PlayerListener implements Listener {
             event.setShouldDropExperience(true);
 
             CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> player.spigot().respawn(), 1L);
+
+            String discordMessage = String.format("@here\n**%s** is uitgeschakeld!\n**Cause of death**: %s", player.getName(), deathMessage);
+            DiscordUtil.queueMessage(DiscordUtil.getTextChannelById(MessageUtil.getDiscordDeathChannel()), discordMessage);
         }
     }
 

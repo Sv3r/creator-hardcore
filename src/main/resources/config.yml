@@ -30,3 +30,5 @@ permission-denied-message: "%prefix% Je hebt geen toegang tot dit commando!"
 
 start-time: 13
 stop-time: 1
+
+discord-death-channel: ""

@@ -35,7 +35,7 @@ public class TimeUtil {
     public static void checkPlayers() {
         if (isServerClosed()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.hasPermission(PlayerUtil.adminPermission)) continue;
+                if (player.hasPermission(PlayerUtil.ignoreKickPermission)) continue;
                 CreatorHardcore.getScheduler().runTask(CreatorHardcore.getPlugin(), () -> player.kick(MessageUtil.getKickMessage()));
             }
         }
@@ -43,7 +43,7 @@ public class TimeUtil {
 
     public static boolean kickPlayerIfClosed(Player player) {
         if (isServerClosed()) {
-            if (player.hasPermission(PlayerUtil.adminPermission)) return false;
+            if (player.hasPermission(PlayerUtil.ignoreKickPermission)) return false;
             CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> player.kick(MessageUtil.getKickMessage()), 60L);
             return true;
         }
