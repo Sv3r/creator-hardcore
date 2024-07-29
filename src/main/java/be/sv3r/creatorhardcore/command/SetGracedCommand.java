@@ -47,8 +47,6 @@ public class SetGracedCommand implements BasicCommand {
             return;
         }
 
-        PlayerUtil.setPlayerState(setGracedPlayer, PlayerState.GRACED);
-
         Location worldSpawn = CreatorHardcore.getPlugin().getServer().getWorlds().getFirst().getSpawnLocation();
 
         if (setGracedPlayer.getRespawnLocation() != null) {
@@ -58,9 +56,10 @@ public class SetGracedCommand implements BasicCommand {
         }
 
         setGracedPlayer.setGameMode(GameMode.SURVIVAL);
-        dataContainer.set(PlayerUtil.joinTimeKey, PersistentDataType.STRING, Instant.now().toString());
         CreatorHardcore plugin = CreatorHardcore.getPlugin();
         CreatorHardcore.getScheduler().runTaskLaterAsynchronously(plugin, new PlayerCrudeTask(plugin, player.getUniqueId()), PlayerUtil.gracePeriod * 1200);
+        dataContainer.set(PlayerUtil.joinTimeKey, PersistentDataType.STRING, Instant.now().toString());
+        PlayerUtil.setPlayerState(setGracedPlayer, PlayerState.GRACED);
         MessageUtil.sendRespawnMessage(setGracedPlayer);
 
         MessageUtil.sendMessageWithPrefix(player, "Speler <white><bold>" + setGracedPlayer.getName() + "</bold></white> is nu graced!");
