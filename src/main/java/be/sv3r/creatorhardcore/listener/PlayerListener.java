@@ -113,9 +113,9 @@ public class PlayerListener implements Listener {
 
         UUID playerUuid = player.getUniqueId();
 
-        if (!PlayerUtil.isPlayerCrude(player) || PlayerUtil.isPlayerFelled(player)) {
+        if (!PlayerUtil.isPlayerCrude(player)) {
             MessageUtil.sendRespawnMessage(event.getPlayer());
-        } else {
+        } else if (!PlayerUtil.isPlayerFelled(player)) {
             if (deathLocations.containsKey(playerUuid)) {
                 CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> {
                     player.teleport(deathLocations.get(playerUuid));
