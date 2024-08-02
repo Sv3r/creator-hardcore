@@ -85,7 +85,7 @@ public class PlayerListener implements Listener {
 
         UUID playerUuid = player.getUniqueId();
 
-        if (PlayerUtil.isPlayerCrude(player)) {
+        if (!PlayerUtil.isPlayerFelled(player) && PlayerUtil.isPlayerCrude(player)) {
             deathLocations.put(playerUuid, player.getLocation());
 
             player.setGameMode(GameMode.SPECTATOR);
@@ -113,7 +113,7 @@ public class PlayerListener implements Listener {
 
         UUID playerUuid = player.getUniqueId();
 
-        if (!PlayerUtil.isPlayerCrude(player)) {
+        if (!PlayerUtil.isPlayerCrude(player) || PlayerUtil.isPlayerFelled(player)) {
             MessageUtil.sendRespawnMessage(event.getPlayer());
         } else {
             if (deathLocations.containsKey(playerUuid)) {

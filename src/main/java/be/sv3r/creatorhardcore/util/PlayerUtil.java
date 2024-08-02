@@ -51,6 +51,15 @@ public class PlayerUtil {
         return getPassedTimeSinceFirstJoin(player) >= gracePeriod;
     }
 
+    public static boolean isPlayerFelled(Player player) {
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+        if (dataContainer.has(stateKey)) {
+            PlayerState playerState = PlayerState.valueOf(dataContainer.get(stateKey, PersistentDataType.STRING));
+            return playerState.equals(PlayerState.FELLED);
+        }
+        return false;
+    }
+
     public static long getRemainingGraceTime(Player player) {
         return gracePeriod - getPassedTimeSinceFirstJoin(player);
     }
