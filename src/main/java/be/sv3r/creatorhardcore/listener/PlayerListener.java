@@ -179,6 +179,8 @@ public class PlayerListener implements Listener {
         PlayerState damagerState = PlayerState.valueOf(damagerDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
         PlayerState victimState = PlayerState.valueOf(victimDataContainer.get(PlayerUtil.stateKey, PersistentDataType.STRING));
 
-        return !damagerState.equals(PlayerState.CRUDE) || !victimState.equals(PlayerState.CRUDE);
+        if (damagerState.equals(PlayerState.FELLED) && victimState.equals(PlayerState.FELLED)) return false;
+
+        return (!damagerState.equals(PlayerState.CRUDE) || !victimState.equals(PlayerState.CRUDE));
     }
 }
