@@ -100,7 +100,7 @@ public class PlayerListener implements Listener {
 
             CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> player.spigot().respawn(), 1L);
 
-            String discordMessage = String.format("@here\n**%s** is uitgeschakeld!\n**Cause of death**: %s", player.getName(), deathMessage);
+            String discordMessage = String.format("@everyone\n**%s** is uitgeschakeld!\n**Cause of death**: %s", player.getName(), deathMessage);
             DiscordUtil.queueMessage(DiscordUtil.getTextChannelById(MessageUtil.getDiscordDeathChannel()), discordMessage);
         }
     }
@@ -115,7 +115,7 @@ public class PlayerListener implements Listener {
 
         if (!PlayerUtil.isPlayerCrude(player)) {
             MessageUtil.sendRespawnMessage(event.getPlayer());
-        } else if (!PlayerUtil.isPlayerFelled(player)) {
+        } else {
             if (deathLocations.containsKey(playerUuid)) {
                 CreatorHardcore.getScheduler().runTaskLater(CreatorHardcore.getPlugin(), () -> {
                     player.teleport(deathLocations.get(playerUuid));
